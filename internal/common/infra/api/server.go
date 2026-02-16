@@ -18,8 +18,6 @@ func Init() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	consumers.RegisterConsumers()
-
 	ginRouter := gin.Default()
 
 	ginRouter.Use(gin.Logger())
@@ -36,4 +34,14 @@ func Init() {
 	if err := ginRouter.Run(config.API.URL); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
+}
+
+func InitWorker() {
+	config := env.GetConfig()
+
+	log.Printf("Starting SQS Worker in %s mode", config.Environment)
+
+	consumers.RegisterConsumers()
+
+	select {}
 }

@@ -25,6 +25,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    command: ["./api"]
     depends_on:
       localstack:
         condition: service_healthy
@@ -41,6 +42,28 @@ services:
     networks:
       - video-processor-network
     restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["./worker"]
+    depends_on:
+      localstack:
+        condition: service_healthy
+    environment:
+      - GO_ENV=development
+      - AWS_REGION=us-east-2
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT=http://localstack:4566
+      - AWS_SQS_FRAME_EXTRACTION_QUEUE=http://localstack:4566/000000000000/frame-extraction-queue
+      - S3_BUCKET_NAME=video-frames-bucket
+    networks:
+      - video-processor-network
+    restart: unless-stopped
+    deploy:
+      replicas: 2
 
 networks:
   video-processor-network:

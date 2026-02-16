@@ -1,0 +1,29 @@
+# Binaries
+bin/
+bootstrap
+*.zip
+lambda-handler.zip
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+
+# Docker
+.docker/localstack/data/

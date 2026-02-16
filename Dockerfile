@@ -1,17 +1,22 @@
-FROM golang:1.23-alpine
-
-RUN apk add --no-cache ffmpeg git
+FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
 
 COPY go.mod go.sum ./
-
 RUN go mod download && go mod verify
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o api ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o worker ./cmd/worker
 
-EXPOSE 8080
+FROM alpine:latest
 
-CMD ["./main"]
+RUN apk --no-cache add ca-certificates ffmpeg
+
+WORKDIR /app
+
+COPY --from=builder /app/api .
+COPY --from=builder /app/worker .
+
+CMD ["./api"]
