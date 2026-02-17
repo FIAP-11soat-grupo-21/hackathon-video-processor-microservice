@@ -27,3 +27,6 @@ go.work
 
 # Docker
 .docker/localstack/data/
+
+# Tests
+coverage.html

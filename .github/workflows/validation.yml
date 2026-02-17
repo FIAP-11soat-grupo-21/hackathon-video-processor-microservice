@@ -1,0 +1,86 @@
+name: Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+    paths:
+      - 'infra/**'
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  analyze:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    env:
+      SONAR_PROJECT_KEY: "FIAP-11soat-grupo-21_hackathon-video-processor-microservice"
+      SONAR_ORGANIZATION: "fiap-11soat-grupo-21"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Install Dependencies
+        run: go mod tidy
+
+      - name: Run Tests and Generate Coverage
+        run: |
+          go test ./... -coverprofile=coverage.out
+
+      - name: Run GolangCI-Lint
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+          golangci-lint run --config .golangci.yml --out-format json > golangci-lint-report.json || true
+
+      - name: Run Gosec Security Scanner
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+          gosec -no-fail -fmt=sonarqube -out report.json ./...
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.verbose=true
+            -Dsonar.go.coverage.reportPaths=coverage.out
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
+            -Dsonar.coverage.exclusions="**/*_test.go,**/*mock*.go,**/mocks/**"
+
+  RunTests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Install Dependencies
+        run: go mod download
+
+      - name: Execute unit tests
+        run: |
+          go test -v ./...

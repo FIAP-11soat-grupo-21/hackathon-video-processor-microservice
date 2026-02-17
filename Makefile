@@ -5,7 +5,11 @@ run-worker:
 	go run cmd/worker/main.go
 
 test:
-	go test ./...
+	go test ./... -v
+
+test-coverage:
+	go test ./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out -o coverage.html
 
 build-api:
 	docker build -t video-processor-api .
