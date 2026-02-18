@@ -54,7 +54,7 @@ jobs:
           gosec -no-fail -fmt=sonarqube -out report.json ./...
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@v5.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
