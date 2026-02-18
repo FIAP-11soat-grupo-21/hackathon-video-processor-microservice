@@ -8,8 +8,15 @@ test:
 	go test ./... -v
 
 test-coverage:
-	go test ./... -coverprofile=coverage.out
+	go test ./... -coverprofile=coverage.out -covermode=count
 	go tool cover -html=coverage.out -o coverage.html
+	@echo "Coverage report generated: coverage.html"
+	@go tool cover -func=coverage.out | grep total
+
+sonar-scan:
+	go test ./... -coverprofile=coverage.out -covermode=count
+	golangci-lint run --config .golangci.yml --out-format json > golangci-lint-report.json || true
+	sonar-scanner
 
 build-api:
 	docker build -t video-processor-api .
