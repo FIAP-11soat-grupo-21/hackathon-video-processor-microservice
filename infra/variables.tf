@@ -1,3 +1,4 @@
+# ECS Service Variables
 variable "application_name" {
   description = "Nome da aplicação ECS"
   type        = string
@@ -43,10 +44,7 @@ variable "task_role_policy_arns" {
   default     = []
 }
 
-#########################################################
-############### Variáveis do API Gateway ################
-#########################################################
-
+# API Gateway Variables
 variable "apigw_integration_type" {
   description = "Tipo de integração do API Gateway"
   type        = string
@@ -74,4 +72,55 @@ variable "apigw_connection_type" {
 variable "app_path_pattern" {
   description = "Lista de padrões de caminho para o listener rule do ALB"
   type        = list(string)
+}
+
+# Lambda Variables
+variable "lambda_environment_variables" {
+  description = "Variáveis de ambiente da função Lambda"
+  type        = map(string)
+  default     = {}
+}
+
+variable "lambda_bucket_name" {
+  description = "Nome do bucket S3 para código da Lambda"
+  type        = string
+  default     = "fiap-tc-terraform-functions-846874"
+}
+
+variable "lambda_s3_key" {
+  description = "Chave S3 do arquivo Lambda"
+  type        = string
+  default     = "video-frame-processor.zip"
+}
+
+variable "lambda_memory_size" {
+  description = "Memória da função Lambda em MB"
+  type        = number
+  default     = 2048
+}
+
+variable "lambda_timeout" {
+  description = "Timeout da função Lambda em segundos"
+  type        = number
+  default     = 300
+}
+
+# SQS Variables
+variable "sqs_queue_name" {
+  description = "Nome da fila SQS para frames"
+  type        = string
+  default     = "video-frame-queue"
+}
+
+# S3 Variables
+variable "s3_input_bucket" {
+  description = "Bucket S3 de entrada (vídeos)"
+  type        = string
+  default     = "fiap-tc-videos-input-846874"
+}
+
+variable "s3_output_bucket" {
+  description = "Bucket S3 de saída (frames)"
+  type        = string
+  default     = "fiap-tc-frames-output-846874"
 }
