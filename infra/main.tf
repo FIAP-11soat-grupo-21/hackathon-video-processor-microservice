@@ -10,9 +10,8 @@ module "frame_processor_lambda" {
   environment = merge(
     var.lambda_environment_variables,
     {
-      FRAME_QUEUE_URL  = aws_sqs_queue.frame_queue.url
-      S3_INPUT_BUCKET  = var.s3_input_bucket
-      S3_OUTPUT_BUCKET = var.s3_output_bucket
+      FRAME_QUEUE_URL = aws_sqs_queue.frame_queue.url
+      S3_BUCKET       = var.s3_bucket
     }
   )
   
@@ -32,10 +31,8 @@ module "frame_processor_lambda" {
         "s3:ListBucket"
       ]
       resources = [
-        "arn:aws:s3:::${var.s3_input_bucket}",
-        "arn:aws:s3:::${var.s3_input_bucket}/*",
-        "arn:aws:s3:::${var.s3_output_bucket}",
-        "arn:aws:s3:::${var.s3_output_bucket}/*"
+        "arn:aws:s3:::${var.s3_bucket}",
+        "arn:aws:s3:::${var.s3_bucket}/*"
       ]
     }
     sqs = {
@@ -72,9 +69,8 @@ module "video_processor_api" {
   ecs_container_environment_variables = merge(
     var.container_environment_variables,
     {
-      FRAME_QUEUE_URL  = aws_sqs_queue.frame_queue.url
-      S3_INPUT_BUCKET  = var.s3_input_bucket
-      S3_OUTPUT_BUCKET = var.s3_output_bucket
+      FRAME_QUEUE_URL = aws_sqs_queue.frame_queue.url
+      S3_BUCKET       = var.s3_bucket
     }
   )
 

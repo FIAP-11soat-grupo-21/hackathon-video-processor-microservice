@@ -113,14 +113,8 @@ variable "sqs_queue_name" {
 }
 
 # S3 Variables
-variable "s3_input_bucket" {
-  description = "Bucket S3 de entrada (vídeos)"
+variable "s3_bucket" {
+  description = "Bucket S3 para vídeos e frames"
   type        = string
-  default     = "fiap-tc-videos-input-846874"
-}
-
-variable "s3_output_bucket" {
-  description = "Bucket S3 de saída (frames)"
-  type        = string
-  default     = "fiap-tc-frames-output-846874"
+  default     = "fiap-tc-terraform-846874"
 }

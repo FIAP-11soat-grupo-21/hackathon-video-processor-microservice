@@ -32,5 +32,4 @@ lambda_timeout     = 300
 
 sqs_queue_name = "video-frame-queue"
 
-s3_input_bucket  = "fiap-tc-videos-input-846874"
-s3_output_bucket = "fiap-tc-frames-output-846874"
+s3_bucket = "fiap-tc-terraform-846874"

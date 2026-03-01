@@ -38,8 +38,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_ENDPOINT=http://localstack:4566
       - AWS_SQS_FRAME_EXTRACTION_QUEUE=http://localstack:4566/000000000000/frame-extraction-queue
-      - S3_INPUT_BUCKET=videos-input-bucket
-      - S3_OUTPUT_BUCKET=frames-output-bucket
+      - S3_BUCKET=video-bucket
     networks:
       - video-processor-network
     restart: unless-stopped
