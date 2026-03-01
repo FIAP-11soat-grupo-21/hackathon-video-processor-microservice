@@ -28,15 +28,15 @@ output "lambda_integration_id" {
   description = "ID da integração Lambda com API Gateway"
 }
 
-output "ecs_service_name" {
-  value       = module.video_processor_api.service_name
-  description = "Nome do serviço ECS"
-}
+# output "ecs_service_name" {
+#   value       = module.video_processor_api.service_name
+#   description = "Nome do serviço ECS"
+# }
 
-output "ecs_service_id" {
-  value       = module.video_processor_api.service_id
-  description = "ID do serviço ECS"
-}
+# output "ecs_service_id" {
+#   value       = module.video_processor_api.service_id
+#   description = "ID do serviço ECS"
+# }
 
 output "target_group_arn" {
   value       = aws_alb_target_group.target_group.arn
