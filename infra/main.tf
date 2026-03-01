@@ -10,8 +10,9 @@ module "frame_processor_lambda" {
   environment = merge(
     var.lambda_environment_variables,
     {
-      FRAME_QUEUE_URL = aws_sqs_queue.frame_queue.url
-      S3_BUCKET       = var.s3_bucket
+      AWS_REGION                      = data.aws_region.current.name
+      AWS_SQS_FRAME_EXTRACTION_QUEUE  = aws_sqs_queue.frame_queue.url
+      S3_BUCKET                       = var.s3_bucket
     }
   )
   
@@ -69,8 +70,9 @@ module "video_processor_api" {
   ecs_container_environment_variables = merge(
     var.container_environment_variables,
     {
-      FRAME_QUEUE_URL = aws_sqs_queue.frame_queue.url
-      S3_BUCKET       = var.s3_bucket
+      AWS_REGION                      = data.aws_region.current.name
+      AWS_SQS_FRAME_EXTRACTION_QUEUE  = aws_sqs_queue.frame_queue.url
+      S3_BUCKET                       = var.s3_bucket
     }
   )
 
