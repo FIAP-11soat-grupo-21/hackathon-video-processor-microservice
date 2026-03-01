@@ -99,9 +99,8 @@ resource "aws_sqs_queue" "frame_dlq" {
 }
 
 resource "aws_lambda_event_source_mapping" "sqs_trigger" {
-  event_source_arn       = aws_sqs_queue.frame_queue.arn
-  function_name          = module.frame_processor_lambda.lambda_arn
-  batch_size             = 1
-  enabled                = true
-  maximum_retry_attempts = 3
+  event_source_arn = aws_sqs_queue.frame_queue.arn
+  function_name    = module.frame_processor_lambda.lambda_arn
+  batch_size       = 1
+  enabled          = true
 }
