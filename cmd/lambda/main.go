@@ -26,7 +26,7 @@ func handler(ctx context.Context, sqsEvent events.SQSEvent) error {
 	useCase := use_cases.NewExtractFrameUseCase(
 		videoProcessor,
 		storageService,
-		cfg.S3.BucketName,
+		cfg.S3.OutputBucket,
 	)
 
 	for _, record := range sqsEvent.Records {

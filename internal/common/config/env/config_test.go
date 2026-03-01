@@ -47,8 +47,12 @@ func TestGetConfig_WithDefaults(t *testing.T) {
 		t.Errorf("Expected AWS.Region to be 'us-east-1', got '%s'", cfg.AWS.Region)
 	}
 
-	if cfg.S3.BucketName != "video-frames-bucket" {
-		t.Errorf("Expected S3.BucketName to be 'video-frames-bucket', got '%s'", cfg.S3.BucketName)
+	if cfg.S3.InputBucket != "fiap-tc-videos-input-846874" {
+		t.Errorf("Expected S3.InputBucket to be 'fiap-tc-videos-input-846874', got '%s'", cfg.S3.InputBucket)
+	}
+
+	if cfg.S3.OutputBucket != "fiap-tc-frames-output-846874" {
+		t.Errorf("Expected S3.OutputBucket to be 'fiap-tc-frames-output-846874', got '%s'", cfg.S3.OutputBucket)
 	}
 }
 
@@ -64,7 +68,8 @@ func TestGetConfig_WithCustomEnvironmentVariables(t *testing.T) {
 	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret-key")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
-	os.Setenv("S3_BUCKET_NAME", "test-bucket")
+	os.Setenv("S3_INPUT_BUCKET", "test-input-bucket")
+	os.Setenv("S3_OUTPUT_BUCKET", "test-output-bucket")
 
 	cfg := GetConfig()
 
@@ -105,8 +110,12 @@ func TestGetConfig_WithCustomEnvironmentVariables(t *testing.T) {
 		t.Errorf("Expected AWS.SQS.Queues.FrameExtraction to be 'test-queue', got '%s'", cfg.AWS.SQS.Queues.FrameExtraction)
 	}
 
-	if cfg.S3.BucketName != "test-bucket" {
-		t.Errorf("Expected S3.BucketName to be 'test-bucket', got '%s'", cfg.S3.BucketName)
+	if cfg.S3.InputBucket != "test-input-bucket" {
+		t.Errorf("Expected S3.InputBucket to be 'test-input-bucket', got '%s'", cfg.S3.InputBucket)
+	}
+
+	if cfg.S3.OutputBucket != "test-output-bucket" {
+		t.Errorf("Expected S3.OutputBucket to be 'test-output-bucket', got '%s'", cfg.S3.OutputBucket)
 	}
 }
 
@@ -208,7 +217,8 @@ func TestConfig_AllFieldsPopulated(t *testing.T) {
 	os.Setenv("AWS_SECRET_ACCESS_KEY", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY")
 	os.Setenv("AWS_ENDPOINT", "https://aws.amazon.com")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "frame-queue-prod")
-	os.Setenv("S3_BUCKET_NAME", "production-bucket")
+	os.Setenv("S3_INPUT_BUCKET", "production-input-bucket")
+	os.Setenv("S3_OUTPUT_BUCKET", "production-output-bucket")
 
 	cfg := GetConfig()
 
@@ -248,7 +258,11 @@ func TestConfig_AllFieldsPopulated(t *testing.T) {
 		t.Errorf("Expected FrameExtraction queue 'frame-queue-prod', got '%s'", cfg.AWS.SQS.Queues.FrameExtraction)
 	}
 	
-	if cfg.S3.BucketName != "production-bucket" {
-		t.Errorf("Expected S3.BucketName 'production-bucket', got '%s'", cfg.S3.BucketName)
+	if cfg.S3.InputBucket != "production-input-bucket" {
+		t.Errorf("Expected S3.InputBucket 'production-input-bucket', got '%s'", cfg.S3.InputBucket)
+	}
+
+	if cfg.S3.OutputBucket != "production-output-bucket" {
+		t.Errorf("Expected S3.OutputBucket 'production-output-bucket', got '%s'", cfg.S3.OutputBucket)
 	}
 }

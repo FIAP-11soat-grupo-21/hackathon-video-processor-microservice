@@ -38,7 +38,8 @@ type QueuesConfig struct {
 }
 
 type S3Config struct {
-	BucketName string
+	InputBucket  string
+	OutputBucket string
 }
 
 var (
@@ -72,7 +73,8 @@ func GetConfig() *Config {
 				},
 			},
 			S3: S3Config{
-				BucketName: getEnv("S3_BUCKET_NAME", "video-frames-bucket"),
+				InputBucket:  getEnv("S3_INPUT_BUCKET", "fiap-tc-videos-input-846874"),
+				OutputBucket: getEnv("S3_OUTPUT_BUCKET", "fiap-tc-frames-output-846874"),
 			},
 		}
 	})

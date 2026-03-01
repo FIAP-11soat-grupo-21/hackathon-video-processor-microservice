@@ -20,7 +20,8 @@ func setupTestEnv() {
 	os.Setenv("AWS_REGION", "us-east-1")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "http://localhost:4566/000000000000/frame-extraction")
-	os.Setenv("S3_BUCKET_NAME", "test-output-bucket")
+	os.Setenv("S3_INPUT_BUCKET", "test-input-bucket")
+	os.Setenv("S3_OUTPUT_BUCKET", "test-output-bucket")
 }
 
 func setupTestRouter() *gin.Engine {

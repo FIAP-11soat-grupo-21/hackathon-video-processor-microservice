@@ -28,7 +28,7 @@ func ExtractFrame(msgBody []byte) error {
 	useCase := use_cases.NewExtractFrameUseCase(
 		videoProcessor,
 		storageService,
-		cfg.S3.BucketName,
+		cfg.S3.OutputBucket,
 	)
 
 	err := useCase.Execute(ctx, message)

@@ -13,18 +13,18 @@ import (
 type ExtractFrameUseCase struct {
 	videoProcessor ports.IVideoProcessor
 	storageService ports.IStorageService
-	bucketName     string
+	outputBucket   string
 }
 
 func NewExtractFrameUseCase(
 	videoProcessor ports.IVideoProcessor,
 	storageService ports.IStorageService,
-	bucketName string,
+	outputBucket string,
 ) *ExtractFrameUseCase {
 	return &ExtractFrameUseCase{
 		videoProcessor: videoProcessor,
 		storageService: storageService,
-		bucketName:     bucketName,
+		outputBucket:   outputBucket,
 	}
 }
 
@@ -43,7 +43,7 @@ func (uc *ExtractFrameUseCase) Execute(
 
 	err = uc.storageService.UploadObject(
 		ctx,
-		uc.bucketName,
+		uc.outputBucket,
 		frameKey,
 		bytes.NewReader(frameData),
 		"image/jpeg",
