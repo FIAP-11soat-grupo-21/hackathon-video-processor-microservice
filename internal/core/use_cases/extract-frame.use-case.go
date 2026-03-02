@@ -39,7 +39,7 @@ func (uc *ExtractFrameUseCase) Execute(
 		return fmt.Errorf("failed to extract frame: %w", err)
 	}
 
-	frameKey := fmt.Sprintf("video-processor/frames/%s/frame_%d_%.2fs.jpg", message.JobID, message.Index, message.Timestamp)
+	frameKey := fmt.Sprintf("tech-challenge-project/video-processor/frames/%s/frame_%d_%.2fs.jpg", message.JobID, message.Index, message.Timestamp)
 
 	err = uc.storageService.UploadObject(
 		ctx,
