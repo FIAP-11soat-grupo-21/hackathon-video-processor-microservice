@@ -15,8 +15,6 @@ func TestGetConfig_WithDefaults(t *testing.T) {
 	resetConfig()
 	os.Clearenv()
 	
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-key")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
 
@@ -60,8 +58,6 @@ func TestGetConfig_WithCustomEnvironmentVariables(t *testing.T) {
 	os.Setenv("API_HOST", "localhost")
 	os.Setenv("API_PORT", "3000")
 	os.Setenv("AWS_REGION", "sa-east-1")
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-key-id")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret-key")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
 	os.Setenv("S3_BUCKET", "test-bucket")
@@ -89,14 +85,6 @@ func TestGetConfig_WithCustomEnvironmentVariables(t *testing.T) {
 		t.Errorf("Expected AWS.Region to be 'sa-east-1', got '%s'", cfg.AWS.Region)
 	}
 
-	if cfg.AWS.AccessKeyID != "test-key-id" {
-		t.Errorf("Expected AWS.AccessKeyID to be 'test-key-id', got '%s'", cfg.AWS.AccessKeyID)
-	}
-
-	if cfg.AWS.SecretAccessKey != "test-secret-key" {
-		t.Errorf("Expected AWS.SecretAccessKey to be 'test-secret-key', got '%s'", cfg.AWS.SecretAccessKey)
-	}
-
 	if cfg.AWS.Endpoint != "http://localhost:4566" {
 		t.Errorf("Expected AWS.Endpoint to be 'http://localhost:4566', got '%s'", cfg.AWS.Endpoint)
 	}
@@ -114,8 +102,6 @@ func TestGetConfig_Singleton(t *testing.T) {
 	resetConfig()
 	os.Clearenv()
 	
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-key")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
 
@@ -131,8 +117,6 @@ func TestIsProduction_WhenProduction(t *testing.T) {
 	resetConfig()
 	os.Clearenv()
 	os.Setenv("GO_ENV", "production")
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-key")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
 
@@ -147,8 +131,6 @@ func TestIsProduction_WhenDevelopment(t *testing.T) {
 	resetConfig()
 	os.Clearenv()
 	os.Setenv("GO_ENV", "development")
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-key")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
 
@@ -163,8 +145,6 @@ func TestIsProduction_WhenStaging(t *testing.T) {
 	resetConfig()
 	os.Clearenv()
 	os.Setenv("GO_ENV", "staging")
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-key")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "test-queue")
 
@@ -204,8 +184,6 @@ func TestConfig_AllFieldsPopulated(t *testing.T) {
 	os.Setenv("API_HOST", "testhost")
 	os.Setenv("API_PORT", "9999")
 	os.Setenv("AWS_REGION", "eu-west-1")
-	os.Setenv("AWS_ACCESS_KEY_ID", "AKIAIOSFODNN7EXAMPLE")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY")
 	os.Setenv("AWS_ENDPOINT", "https://aws.amazon.com")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "frame-queue-prod")
 	os.Setenv("S3_BUCKET", "production-bucket")
@@ -230,14 +208,6 @@ func TestConfig_AllFieldsPopulated(t *testing.T) {
 	
 	if cfg.AWS.Region != "eu-west-1" {
 		t.Errorf("Expected AWS.Region 'eu-west-1', got '%s'", cfg.AWS.Region)
-	}
-	
-	if cfg.AWS.AccessKeyID != "AKIAIOSFODNN7EXAMPLE" {
-		t.Errorf("Expected AWS.AccessKeyID 'AKIAIOSFODNN7EXAMPLE', got '%s'", cfg.AWS.AccessKeyID)
-	}
-	
-	if cfg.AWS.SecretAccessKey != "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" {
-		t.Errorf("Expected AWS.SecretAccessKey to match, got '%s'", cfg.AWS.SecretAccessKey)
 	}
 	
 	if cfg.AWS.Endpoint != "https://aws.amazon.com" {

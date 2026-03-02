@@ -46,16 +46,6 @@ func NewSQSConsumer() *SQSConsumer {
 		optFns = append(optFns, config.WithBaseEndpoint(appCfg.AWS.Endpoint))
 	}
 
-	if appCfg.AWS.AccessKeyID != "" && appCfg.AWS.SecretAccessKey != "" {
-		optFns = append(optFns, config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(
-				appCfg.AWS.AccessKeyID,
-				appCfg.AWS.SecretAccessKey,
-				"",
-			),
-		))
-	}
-
 	awsCfg, err := config.LoadDefaultConfig(ctx, optFns...)
 	if err != nil {
 		log.Fatalf("unable to load AWS SDK config, %v", err)

@@ -15,8 +15,6 @@ import (
 )
 
 func setupTestEnv() {
-	os.Setenv("AWS_ACCESS_KEY_ID", "test-access-key")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "test-secret-key")
 	os.Setenv("AWS_REGION", "us-east-1")
 	os.Setenv("AWS_ENDPOINT", "http://localhost:4566")
 	os.Setenv("AWS_SQS_FRAME_EXTRACTION_QUEUE", "http://localhost:4566/000000000000/frame-extraction")
