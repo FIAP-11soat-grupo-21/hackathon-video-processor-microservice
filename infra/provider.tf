@@ -13,7 +13,7 @@ terraform {
 
   backend "s3" {
     bucket = "fiap-tc-terraform-846874"
-    key    = "tech-challenge-project/video-processor/terraform.tfstate"
+    key    = "tech-challenge-project/ECS/Service/video-processor/terraform.tfstate"
     region = "us-east-2"
   }
 }
