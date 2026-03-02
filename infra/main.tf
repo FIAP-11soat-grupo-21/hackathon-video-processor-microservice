@@ -10,7 +10,6 @@ module "frame_processor_lambda" {
   environment = merge(
     var.lambda_environment_variables,
     {
-      AWS_REGION                      = data.aws_region.current.name
       AWS_SQS_FRAME_EXTRACTION_QUEUE  = aws_sqs_queue.frame_queue.url
       S3_BUCKET                       = var.s3_bucket
     }
