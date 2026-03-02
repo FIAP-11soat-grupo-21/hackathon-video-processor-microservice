@@ -160,7 +160,12 @@ jobs:
             echo "This is a workflow_dispatch event. Performing a terraform plan first."
             terraform apply -var-file=values.tfvars -auto-approve
           else
-            terraform apply -var-file=values.tfvars -auto-approve -target=module.video_processor_api
+            terraform apply -var-file=values.tfvars -auto-approve \
+              -target=module.video_processor_api \
+              -target=aws_lambda_layer_version.ffmpeg \
+              -target=data.aws_s3_object.lambda_code \
+              -target=null_resource.update_lambda_code \
+              -target=null_resource.attach_layer_to_lambda
           fi
 
       - name: Done
