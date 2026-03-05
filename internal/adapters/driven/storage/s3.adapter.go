@@ -8,7 +8,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
 	"video_processor_service/internal/common/config/env"
@@ -35,16 +34,6 @@ func NewS3StorageService() *S3StorageService {
 
 	if appCfg.AWS.Endpoint != "" {
 		optFns = append(optFns, config.WithBaseEndpoint(appCfg.AWS.Endpoint))
-	}
-
-	if appCfg.AWS.AccessKeyID != "" && appCfg.AWS.SecretAccessKey != "" {
-		optFns = append(optFns, config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(
-				appCfg.AWS.AccessKeyID,
-				appCfg.AWS.SecretAccessKey,
-				"",
-			),
-		))
 	}
 
 	awsCfg, err := config.LoadDefaultConfig(ctx, optFns...)

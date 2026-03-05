@@ -10,7 +10,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 )
@@ -44,16 +43,6 @@ func NewSQSConsumer() *SQSConsumer {
 
 	if appCfg.AWS.Endpoint != "" {
 		optFns = append(optFns, config.WithBaseEndpoint(appCfg.AWS.Endpoint))
-	}
-
-	if appCfg.AWS.AccessKeyID != "" && appCfg.AWS.SecretAccessKey != "" {
-		optFns = append(optFns, config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(
-				appCfg.AWS.AccessKeyID,
-				appCfg.AWS.SecretAccessKey,
-				"",
-			),
-		))
 	}
 
 	awsCfg, err := config.LoadDefaultConfig(ctx, optFns...)

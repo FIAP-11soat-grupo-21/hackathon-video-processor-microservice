@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"video_processor_service/internal/adapters/driver/api/routes"
-	"video_processor_service/internal/adapters/driver/queue/consumers"
 	"video_processor_service/internal/common/config/env"
 )
 
@@ -34,14 +33,4 @@ func Init() {
 	if err := ginRouter.Run(config.API.URL); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
-}
-
-func InitWorker() {
-	config := env.GetConfig()
-
-	log.Printf("Starting SQS Worker in %s mode", config.Environment)
-
-	consumers.RegisterConsumers()
-
-	select {}
 }
