@@ -8,8 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
-	"strings"
 
 	"video_processor_service/internal/core/domain/ports"
 )
@@ -22,39 +20,6 @@ func NewFFmpegVideoProcessor(storageService ports.IStorageService) *FFmpegVideoP
 	return &FFmpegVideoProcessor{
 		storageService: storageService,
 	}
-}
-
-func (f *FFmpegVideoProcessor) GetVideoDuration(ctx context.Context, bucket, key string) (float64, error) {
-	tmpFile, err := f.downloadToTemp(ctx, bucket, key)
-	if err != nil {
-		return 0, fmt.Errorf("failed to download video: %w", err)
-	}
-	defer os.Remove(tmpFile)
-
-	cmd := exec.CommandContext(ctx, "ffprobe",
-		"-v", "error",
-		"-show_entries", "format=duration",
-		"-of", "default=noprint_wrappers=1:nokey=1",
-		tmpFile,
-	)
-
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-
-	err = cmd.Run()
-	if err != nil {
-		return 0, fmt.Errorf("failed to get video duration: %w, stderr: %s", err, stderr.String())
-	}
-
-	durationStr := strings.TrimSpace(out.String())
-	duration, err := strconv.ParseFloat(durationStr, 64)
-	if err != nil {
-		return 0, fmt.Errorf("failed to parse duration: %w", err)
-	}
-
-	return duration, nil
 }
 
 func (f *FFmpegVideoProcessor) ExtractFrame(ctx context.Context, bucket, key string, timestamp float64) ([]byte, error) {

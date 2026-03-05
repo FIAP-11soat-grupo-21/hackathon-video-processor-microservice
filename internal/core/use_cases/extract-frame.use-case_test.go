@@ -12,6 +12,18 @@ import (
 	"video_processor_service/internal/core/dto"
 )
 
+type MockVideoProcessor struct {
+	mock.Mock
+}
+
+func (m *MockVideoProcessor) ExtractFrame(ctx context.Context, bucket, key string, timestamp float64) ([]byte, error) {
+	args := m.Called(ctx, bucket, key, timestamp)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]byte), args.Error(1)
+}
+
 type MockStorageService struct {
 	mock.Mock
 }
@@ -56,7 +68,7 @@ func TestExtractFrameUseCase_Execute_Success(t *testing.T) {
 
 	frameData := []byte("fake-jpeg-data")
 	mockVideoProcessor.On("ExtractFrame", ctx, "input-bucket", "video.mp4", 5.5).Return(frameData, nil)
-	mockStorageService.On("UploadObject", ctx, bucketName, "video-processor/frames/test-job-123/frame_1_5.50s.jpg", mock.Anything, "image/jpeg").Return(nil)
+	mockStorageService.On("UploadObject", ctx, bucketName, "tech-challenge-project/video-processor/frames/test-job-123/frame_1_5.50s.jpg", mock.Anything, "image/jpeg").Return(nil)
 
 	err := useCase.Execute(ctx, message)
 
@@ -119,7 +131,7 @@ func TestExtractFrameUseCase_Execute_UploadError(t *testing.T) {
 	frameData := []byte("fake-jpeg-data")
 	uploadError := errors.New("s3 upload failed")
 	mockVideoProcessor.On("ExtractFrame", ctx, "input-bucket", "video.mp4", 10.0).Return(frameData, nil)
-	mockStorageService.On("UploadObject", ctx, bucketName, "video-processor/frames/test-job-123/frame_2_10.00s.jpg", mock.Anything, "image/jpeg").Return(uploadError)
+	mockStorageService.On("UploadObject", ctx, bucketName, "tech-challenge-project/video-processor/frames/test-job-123/frame_2_10.00s.jpg", mock.Anything, "image/jpeg").Return(uploadError)
 
 	err := useCase.Execute(ctx, message)
 

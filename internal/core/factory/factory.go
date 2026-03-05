@@ -11,10 +11,6 @@ func NewQueueConsumer() ports.IQueueConsumer {
 	return queue.NewSQSConsumer()
 }
 
-func NewQueuePublisher() ports.IQueuePublisher {
-	return queue.NewSQSPublisher()
-}
-
 func NewStorageService() ports.IStorageService {
 	return storage.NewS3StorageService()
 }

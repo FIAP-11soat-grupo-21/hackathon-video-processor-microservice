@@ -4,6 +4,9 @@ bootstrap
 *.zip
 lambda-handler.zip
 
+# Lambda Layers
+infra/layers/
+
 # Go
 *.exe
 *.exe~
