@@ -1,24 +1,29 @@
-output "frame_queue_url" {
-  value       = aws_sqs_queue.frame_queue.url
-  description = "URL da fila SQS para frames"
+output "chunk_processor_lambda_arn" {
+  value       = module.chunk_processor_lambda.lambda_arn
+  description = "ARN da função Lambda chunk-processor"
 }
 
-output "frame_queue_arn" {
-  value       = aws_sqs_queue.frame_queue.arn
-  description = "ARN da fila SQS para frames"
+output "chunk_processor_lambda_name" {
+  value       = module.chunk_processor_lambda.lambda_name
+  description = "Nome da função Lambda chunk-processor"
 }
 
-output "frame_dlq_url" {
-  value       = aws_sqs_queue.frame_dlq.url
-  description = "URL da Dead Letter Queue"
+output "update_status_lambda_arn" {
+  value       = module.update_video_chunk_status_lambda.lambda_arn
+  description = "ARN da função Lambda update-video-chunk-status"
 }
 
-output "frame_dlq_arn" {
-  value       = aws_sqs_queue.frame_dlq.arn
-  description = "ARN da Dead Letter Queue"
+output "update_status_lambda_name" {
+  value       = module.update_video_chunk_status_lambda.lambda_name
+  description = "Nome da função Lambda update-video-chunk-status"
 }
 
-output "lambda_arn" {
-  value       = module.frame_processor_lambda.lambda_arn
-  description = "ARN da função Lambda"
+output "zip_processor_lambda_arn" {
+  value       = module.zip_processor_lambda.lambda_arn
+  description = "ARN da função Lambda zip-processor"
+}
+
+output "zip_processor_lambda_name" {
+  value       = module.zip_processor_lambda.lambda_name
+  description = "Nome da função Lambda zip-processor"
 }

@@ -2,9 +2,15 @@ lambda_environment_variables = {
   LOG_LEVEL = "INFO"
 }
 
-lambda_memory_size = 2048
-lambda_timeout     = 300
+chunk_processor_memory_size = 3008
+chunk_processor_timeout     = 900
 
-sqs_queue_name = "video-frame-queue"
+update_status_memory_size = 512
+update_status_timeout     = 60
+
+zip_processor_memory_size = 2048
+zip_processor_timeout     = 900
 
 s3_bucket = "fiap-tc-terraform-846874"
+
+dynamodb_table_name = "video-chunks"
