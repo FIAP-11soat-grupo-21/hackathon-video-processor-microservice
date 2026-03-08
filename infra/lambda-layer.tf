@@ -6,38 +6,15 @@ resource "aws_lambda_layer_version" "ffmpeg" {
   compatible_runtimes = ["provided.al2023", "provided.al2"]
 }
 
-data "aws_s3_object" "lambda_code" {
-  bucket = var.lambda_bucket_name
-  key    = var.lambda_s3_key
-}
-
-resource "null_resource" "update_lambda_code" {
-  depends_on = [module.frame_processor_lambda]
-
-  triggers = {
-    code_hash   = data.aws_s3_object.lambda_code.etag
-    lambda_name = "video-frame-processor"
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      aws lambda update-function-code \
-        --function-name ${self.triggers.lambda_name} \
-        --s3-bucket ${var.lambda_bucket_name} \
-        --s3-key ${var.lambda_s3_key}
-    EOT
-  }
-}
-
-resource "null_resource" "attach_layer_to_lambda" {
+resource "null_resource" "attach_ffmpeg_layer" {
   depends_on = [
-    null_resource.update_lambda_code,
+    module.chunk_processor_lambda,
     aws_lambda_layer_version.ffmpeg
   ]
 
   triggers = {
     layer_version = aws_lambda_layer_version.ffmpeg.version
-    lambda_name   = "video-frame-processor"
+    lambda_name   = "chunk-processor"
   }
 
   provisioner "local-exec" {

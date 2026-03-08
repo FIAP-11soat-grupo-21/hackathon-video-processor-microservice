@@ -94,7 +94,7 @@ module "update_video_chunk_status_lambda" {
         "dynamodb:Scan"
       ]
       resources = [
-        "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${var.dynamodb_table_name}"
+        "arn:aws:dynamodb:${data.aws_region.current.id}:*:table/${var.dynamodb_table_name}"
       ]
     }
     s3 = {
