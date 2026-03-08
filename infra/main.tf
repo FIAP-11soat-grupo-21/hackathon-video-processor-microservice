@@ -43,7 +43,7 @@ module "chunk_processor_lambda" {
         "sqs:GetQueueUrl"
       ]
       resources = [
-        data.terraform_remote_state.sqs_chunk_processor.outputs.queue_arn
+        data.terraform_remote_state.sqs_chunk_processor.outputs.sqs_queue_arn
       ]
     }
     sns = {
@@ -115,7 +115,7 @@ module "update_video_chunk_status_lambda" {
         "sqs:GetQueueUrl"
       ]
       resources = [
-        data.terraform_remote_state.sqs_update_video_chunk_status.outputs.queue_arn
+        data.terraform_remote_state.sqs_update_video_chunk_status.outputs.sqs_queue_arn
       ]
     }
     sns = {
@@ -176,7 +176,7 @@ module "zip_processor_lambda" {
         "sqs:GetQueueUrl"
       ]
       resources = [
-        data.terraform_remote_state.sqs_zip_processor.outputs.queue_arn
+        data.terraform_remote_state.sqs_zip_processor.outputs.sqs_queue_arn
       ]
     }
     sns = {
