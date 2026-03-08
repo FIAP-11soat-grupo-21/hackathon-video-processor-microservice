@@ -59,16 +59,16 @@ func GetConfig() *Config {
 				URL:  apiHost + ":" + apiPort,
 			},
 			AWS: AWSConfig{
-				Region:   getEnv("AWS_REGION", "us-east-1"),
+				Region:   getEnvOptional("AWS_REGION", "us-east-1"),
 				Endpoint: getEnvOptional("AWS_ENDPOINT", ""),
 				SQS: SQSConfig{
 					Queues: QueuesConfig{
-						FrameExtraction: getEnv("AWS_SQS_FRAME_EXTRACTION_QUEUE", ""),
+						FrameExtraction: getEnvOptional("AWS_SQS_FRAME_EXTRACTION_QUEUE", ""),
 					},
 				},
 			},
 			S3: S3Config{
-				Bucket: getEnv("S3_BUCKET", "fiap-tc-terraform-846874"),
+				Bucket: getEnvOptional("S3_BUCKET", "fiap-tc-terraform-846874"),
 			},
 		}
 	})

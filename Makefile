@@ -1,7 +1,5 @@
-.PHONY: test coverage coverage-html build-lambda clean
+.PHONY: test coverage coverage-html clean
 
-LAMBDA_BUCKET=fiap-tc-terraform-functions-846874
-LAMBDA_KEY=video-frame-processor.zip
 COVERAGE_FILE=coverage.out
 COVERAGE_HTML=coverage.html
 
@@ -16,9 +14,8 @@ coverage-html: coverage
 	go tool cover -html=$(COVERAGE_FILE) -o $(COVERAGE_HTML)
 	@echo "Coverage report: $(COVERAGE_HTML)"
 
-build-lambda:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags lambda.norpc -ldflags="-s -w" -o bootstrap ./cmd/lambda
-	zip -j lambda-handler.zip bootstrap
-
 clean:
-	rm -f bootstrap lambda-handler.zip $(COVERAGE_FILE) $(COVERAGE_HTML)
+	rm -f $(COVERAGE_FILE) $(COVERAGE_HTML)
+	find ./cmd/lambda -type f -name "bootstrap" -delete
+	find ./cmd/lambda -type f -name "*.zip" -delete
+

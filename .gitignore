@@ -33,3 +33,4 @@ go.work
 
 # Tests
 coverage.html
+coverage.out

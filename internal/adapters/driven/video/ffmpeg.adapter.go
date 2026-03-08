@@ -79,3 +79,22 @@ func (f *FFmpegVideoProcessor) downloadToTemp(ctx context.Context, bucket, key s
 
 	return tmpFile, nil
 }
+
+func (f *FFmpegVideoProcessor) ExtractFramesFromVideo(ctx context.Context, videoPath, outputPattern string, fps int) error {
+	cmd := exec.CommandContext(ctx, "ffmpeg",
+		"-i", videoPath,
+		"-vf", fmt.Sprintf("fps=%d", fps),
+		"-q:v", "2",
+		outputPattern,
+	)
+
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("ffmpeg failed: %w, stderr: %s", err, stderr.String())
+	}
+
+	return nil
+}
