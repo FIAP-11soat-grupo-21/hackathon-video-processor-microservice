@@ -81,3 +81,9 @@ variable "zip_processor_timeout" {
   type        = number
   default     = 900
 }
+
+variable "lambda_event_source_enabled" {
+  description = "Habilita ou desabilita os event source mappings das lambdas"
+  type        = bool
+  default     = true
+}

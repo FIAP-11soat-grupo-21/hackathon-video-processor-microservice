@@ -46,6 +46,16 @@ jobs:
         run: |
           terraform init -input=false
 
+      - name: Disable Lambda Event Source Mappings
+        working-directory: infra
+        run: |
+          terraform apply -target=aws_lambda_event_source_mapping.chunk_processor_trigger \
+                         -target=aws_lambda_event_source_mapping.update_status_trigger \
+                         -target=aws_lambda_event_source_mapping.zip_processor_trigger \
+                         -var="lambda_event_source_enabled=false" \
+                         -var-file=values.tfvars \
+                         -auto-approve || true
+
       - name: Terraform Destroy
         working-directory: infra
         run: |
