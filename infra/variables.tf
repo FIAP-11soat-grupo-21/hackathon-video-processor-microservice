@@ -8,7 +8,7 @@ variable "lambda_environment_variables" {
 variable "lambda_bucket_name" {
   description = "Nome do bucket S3 para código da Lambda"
   type        = string
-  default     = "fiap-tc-terraform-functions-846874"
+  default     = "fiap-hackathon-lambda-content-44573"
 }
 
 # S3 Variables
