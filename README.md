@@ -48,23 +48,3 @@ SQS: zip-processor → Lambda: zip-processor
   ↓
 SNS: video-processing-complete
 ```
-
-## Estrutura do Projeto
-
-```
-├── cmd/lambda/                    # Entrypoints das Lambdas (apenas bootstrap)
-│   ├── chunk-processor/
-│   ├── update-video-chunk-status/
-│   └── zip-processor/
-├── internal/
-│   ├── adapters/
-│   │   ├── driven/                # Implementações (S3, SNS/SQS, DynamoDB, FFmpeg)
-│   │   └── driver/lambda/         # Handlers das Lambdas (lógica de negócio)
-│   ├── core/
-│   │   ├── domain/ports/          # Interfaces
-│   │   ├── dto/                   # Data Transfer Objects
-│   │   ├── use_cases/             # Casos de uso
-│   │   └── factory/               # Injeção de dependências
-│   └── common/config/             # Configurações
-└── infra/                         # Terraform (IaC)
-```
