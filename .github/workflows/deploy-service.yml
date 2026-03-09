@@ -66,6 +66,7 @@ jobs:
           aws s3 cp chunk-processor.zip s3://${{ env.S3_ASSETS_BUCKET }}/chunk-processor.zip
           aws s3 cp update-video-chunk-status.zip s3://${{ env.S3_ASSETS_BUCKET }}/update-video-chunk-status.zip
           aws s3 cp zip-processor.zip s3://${{ env.S3_ASSETS_BUCKET }}/zip-processor.zip
+          aws s3 cp infra/ffmpeg-layer.zip s3://${{ env.S3_ASSETS_BUCKET }}/ffmpeg-layer.zip
 
   terraform-apply:
     needs: [build-lambdas]
