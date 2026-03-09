@@ -35,13 +35,19 @@ func NewZipProcessorHandler() (*ZipProcessorHandler, error) {
 	return &ZipProcessorHandler{useCase: useCase}, nil
 }
 
-func (h *ZipProcessorHandler) Handle(ctx context.Context, snsEvent events.SNSEvent) error {
-	log.Printf("Processing %d SNS messages", len(snsEvent.Records))
+func (h *ZipProcessorHandler) Handle(ctx context.Context, sqsEvent events.SQSEvent) error {
+	log.Printf("Processing %d SQS messages", len(sqsEvent.Records))
 
-	for _, record := range snsEvent.Records {
+	for _, record := range sqsEvent.Records {
+		var snsMessage events.SNSEntity
+		if err := json.Unmarshal([]byte(record.Body), &snsMessage); err != nil {
+			log.Printf("Error parsing SNS message from SQS: %v", err)
+			continue
+		}
+
 		var message dto.AllChunksProcessedDTO
-		if err := json.Unmarshal([]byte(record.SNS.Message), &message); err != nil {
-			log.Printf("Error parsing message: %v", err)
+		if err := json.Unmarshal([]byte(snsMessage.Message), &message); err != nil {
+			log.Printf("Error parsing all chunks processed message: %v", err)
 			continue
 		}
 

@@ -83,7 +83,7 @@ func (uc *ProcessZipUseCase) Execute(ctx context.Context, message dto.AllChunksP
 	videoIDParts := strings.Split(message.VideoID, "/")
 	videoID := message.VideoID
 	if len(videoIDParts) >= 2 {
-		videoID = videoIDParts[len(videoIDParts)-2] 
+		videoID = videoIDParts[1]
 	}
 	
 	zipKey := fmt.Sprintf("videos/%s/output.zip", videoID)

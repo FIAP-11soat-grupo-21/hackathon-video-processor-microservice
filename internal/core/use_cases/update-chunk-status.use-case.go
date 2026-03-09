@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"video_processor_service/internal/core/domain"
@@ -60,10 +61,16 @@ func (uc *UpdateChunkStatusUseCase) Execute(ctx context.Context, message dto.Chu
 	if allCompleted {
 		log.Printf("All chunks completed for video %s, publishing to SNS", message.VideoID)
 
+		videoIDParts := strings.Split(message.VideoID, "/")
+		videoID := message.VideoID
+		if len(videoIDParts) >= 2 {
+			videoID = videoIDParts[1]
+		}
+
 		allChunksMessage := dto.AllChunksProcessedDTO{
 			VideoID:        message.VideoID,
 			User:           message.User,
-			ImagesLocation: fmt.Sprintf("videos/%s/images", message.VideoID),
+			ImagesLocation: fmt.Sprintf("videos/%s/frames", videoID),
 			Bucket:         uc.s3Bucket,
 		}
 
