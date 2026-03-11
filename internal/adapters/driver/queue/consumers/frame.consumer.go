@@ -9,19 +9,19 @@ import (
 )
 
 type FrameConsumer struct {
-	consumer ports.IQueueConsumer
+	messageBroker ports.IMessageBroker
 }
 
-func NewFrameConsumer(consumer ports.IQueueConsumer) *FrameConsumer {
+func NewFrameConsumer(messageBroker ports.IMessageBroker) *FrameConsumer {
 	return &FrameConsumer{
-		consumer: consumer,
+		messageBroker: messageBroker,
 	}
 }
 
 func (fc *FrameConsumer) RegisterConsumers() {
 	cfg := env.GetConfig()
 
-	err := fc.consumer.ConsumeQueue(cfg.AWS.SQS.Queues.FrameExtraction, handlers.ExtractFrame)
+	err := fc.messageBroker.Subscribe(cfg.AWS.SQS.Queues.FrameExtraction, handlers.ExtractFrame)
 
 	if err != nil {
 		log.Fatalf("Failed to register frame extraction consumer: %v", err)
@@ -31,6 +31,10 @@ func (fc *FrameConsumer) RegisterConsumers() {
 }
 
 func RegisterConsumers() {
-	consumer := NewFrameConsumer(factory.NewQueueConsumer())
+	broker, err := factory.NewMessageBroker()
+	if err != nil {
+		log.Fatalf("Failed to create message broker: %v", err)
+	}
+	consumer := NewFrameConsumer(broker)
 	consumer.RegisterConsumers()
 }

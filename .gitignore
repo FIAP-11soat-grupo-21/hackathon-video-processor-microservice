@@ -2,7 +2,11 @@
 bin/
 bootstrap
 *.zip
+!infra/ffmpeg-layer.zip
 lambda-handler.zip
+
+# Lambda Layers
+infra/layers/
 
 # Go
 *.exe
@@ -30,3 +34,4 @@ go.work
 
 # Tests
 coverage.html
+coverage.out
