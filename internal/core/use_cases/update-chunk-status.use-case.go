@@ -70,7 +70,7 @@ func (uc *UpdateChunkStatusUseCase) Execute(ctx context.Context, message dto.Chu
 		allChunksMessage := dto.AllChunksProcessedDTO{
 			VideoID:        message.VideoID,
 			User:           message.User,
-			ImagesLocation: fmt.Sprintf("videos/%s/frames", videoID),
+			ImagesLocation: fmt.Sprintf("videos/%s/images", videoID),
 			Bucket:         uc.s3Bucket,
 		}
 

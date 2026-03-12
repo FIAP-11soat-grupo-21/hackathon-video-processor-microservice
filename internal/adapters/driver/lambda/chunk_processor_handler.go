@@ -41,17 +41,16 @@ func (h *ChunkProcessorHandler) Handle(ctx context.Context, sqsEvent events.SQSE
 	log.Printf("Processing %d SQS messages", len(sqsEvent.Records))
 
 	for _, record := range sqsEvent.Records {
-		var snsMessage events.SNSEntity
-		if err := json.Unmarshal([]byte(record.Body), &snsMessage); err != nil {
-			log.Printf("Error parsing SNS message from SQS: %v", err)
-			continue
-		}
+		log.Printf("SQS Record Body: %s", record.Body)
 
 		var message dto.ChunkUploadedDTO
-		if err := json.Unmarshal([]byte(snsMessage.Message), &message); err != nil {
+		if err := json.Unmarshal([]byte(record.Body), &message); err != nil {
 			log.Printf("Error parsing chunk message: %v", err)
 			continue
 		}
+
+		log.Printf("Parsed message: bucket=%s, video_object_id=%s, chunk_part=%d", 
+			message.Bucket, message.VideoObjectID, message.ChunkPart)
 
 		if err := h.useCase.Execute(ctx, message); err != nil {
 			log.Printf("Error processing chunk: %v", err)

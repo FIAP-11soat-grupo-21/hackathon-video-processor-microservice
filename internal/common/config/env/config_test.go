@@ -45,8 +45,8 @@ func TestGetConfig_WithDefaults(t *testing.T) {
 		t.Errorf("Expected AWS.Region to be 'us-east-1', got '%s'", cfg.AWS.Region)
 	}
 
-	if cfg.S3.Bucket != "fiap-tc-terraform-846874" {
-		t.Errorf("Expected S3.Bucket to be 'fiap-tc-terraform-846874', got '%s'", cfg.S3.Bucket)
+	if cfg.S3.Bucket != "fiap-hackathon-chunk-bucket-54351" {
+		t.Errorf("Expected S3.Bucket to be 'fiap-hackathon-chunk-bucket-54351', got '%s'", cfg.S3.Bucket)
 	}
 }
 

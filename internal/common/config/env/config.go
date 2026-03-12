@@ -68,7 +68,7 @@ func GetConfig() *Config {
 				},
 			},
 			S3: S3Config{
-				Bucket: getEnvOptional("S3_BUCKET", "fiap-tc-terraform-846874"),
+				Bucket: getEnvOptional("S3_BUCKET", "fiap-hackathon-chunk-bucket-54351"),
 			},
 		}
 	})

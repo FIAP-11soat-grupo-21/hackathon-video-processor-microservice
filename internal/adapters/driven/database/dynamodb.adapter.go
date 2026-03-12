@@ -15,8 +15,8 @@ import (
 )
 
 type VideoChunkModel struct {
-	VideoID   string `dynamodbav:"videoId"`
-	ChunkPart string `dynamodbav:"chunkId"`
+	VideoID   string `dynamodbav:"video_id"`
+	ChunkPart int    `dynamodbav:"chunk_part"`
 	Status    string `dynamodbav:"status"`
 	UserID    string `dynamodbav:"user_id"`
 	UserName  string `dynamodbav:"user_name"`
@@ -56,7 +56,7 @@ func NewDynamoDBRepository(tableName string) (*DynamoDBRepository, error) {
 func (r *DynamoDBRepository) SaveChunk(ctx context.Context, chunk domain.VideoChunk) error {
 	model := VideoChunkModel{
 		VideoID:   chunk.VideoID,
-		ChunkPart: fmt.Sprintf("%d", chunk.ChunkPart),
+		ChunkPart: chunk.ChunkPart,
 		Status:    chunk.Status,
 		UserID:    chunk.UserID,
 		UserName:  chunk.UserName,
@@ -83,7 +83,7 @@ func (r *DynamoDBRepository) SaveChunk(ctx context.Context, chunk domain.VideoCh
 func (r *DynamoDBRepository) GetChunksByVideoID(ctx context.Context, videoID string) ([]domain.VideoChunk, error) {
 	result, err := r.client.Query(ctx, &dynamodb.QueryInput{
 		TableName:              aws.String(r.tableName),
-		KeyConditionExpression: aws.String("videoId = :videoId"),
+		KeyConditionExpression: aws.String("video_id = :videoId"),
 		ExpressionAttributeValues: map[string]types.AttributeValue{
 			":videoId": &types.AttributeValueMemberS{Value: videoID},
 		},
@@ -99,14 +99,9 @@ func (r *DynamoDBRepository) GetChunksByVideoID(ctx context.Context, videoID str
 			return nil, fmt.Errorf("failed to unmarshal chunk: %w", err)
 		}
 
-		var chunkPart int
-		if _, err := fmt.Sscanf(model.ChunkPart, "%d", &chunkPart); err != nil {
-			return nil, fmt.Errorf("failed to parse chunkPart: %w", err)
-		}
-
 		chunk := domain.VideoChunk{
 			VideoID:   model.VideoID,
-			ChunkPart: chunkPart,
+			ChunkPart: model.ChunkPart,
 			Status:    model.Status,
 			UserID:    model.UserID,
 			UserName:  model.UserName,
